@@ -38,4 +38,6 @@ ADD http://dl.google.com/android/repository/tools_r${VERSION_SDK_TOOLS}-linux.zi
 RUN unzip /tools.zip -d /sdk && \
     rm -v /tools.zip
 
+COPY licenses ${ANDROID_HOME}/licenses
+
 RUN (while [ 1 ]; do sleep 5; echo y; done) | ${ANDROID_HOME}/tools/android update sdk -u -a -t ${SDK_PACKAGES}
