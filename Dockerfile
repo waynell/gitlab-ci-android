@@ -21,7 +21,6 @@ RUN apt-get -qq update \
       lib32gcc1 \
       lib32ncurses6 \
       libncurses5 \
-      libncurses5:i386 \
       lib32z1 \
       unzip \
       locales \
