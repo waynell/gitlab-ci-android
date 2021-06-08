@@ -2,10 +2,12 @@ FROM ubuntu:20.04
 MAINTAINER Jan Grewe <jan@faked.org>
 
 ENV VERSION_TOOLS "6858069"
+ENV VERSION_ANDROID_NDK "21.1.6352462"
 
 ENV ANDROID_SDK_ROOT "/sdk"
 # Keep alias for compatibility
 ENV ANDROID_HOME "${ANDROID_SDK_ROOT}"
+ENV ANDROID_NDK_HOME "${ANDROID_SDK_ROOT}/${VERSION_ANDROID_NDK}"
 ENV PATH "$PATH:${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin:${ANDROID_SDK_ROOT}/platform-tools"
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -48,3 +50,13 @@ RUN mkdir -p /root/.android \
 
 ADD packages.txt /sdk
 RUN sdkmanager --package_file=/sdk/packages.txt
+
+RUN apt-get -qq update && \
+    apt-get install -qqy --no-install-recommends \
+    build-essential \
+    file \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ADD https://dl.google.com/android/repository/${VERSION_ANDROID_NDK}-linux-x86_64.zip /ndk.zip
+RUN unzip /ndk.zip -d /sdk && \
+    rm -v /ndk.zip
